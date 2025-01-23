@@ -7,29 +7,11 @@ find_package(pybind11 REQUIRED)
 find_package(Eigen3)
 # find_package(gbs REQUIRED)
 set(GBS_INCLUDE_DIR "/home/sebastien/micromamba/envs/dev/include/gbs")
-
-
-# Créer la cible d'extension Python.
-# Supposons que le point d'entrée du binding se trouve dans src/main.cpp
-
-# pybind11_add_module(
-#         pygbs
-#         src/gbsBindCurves.cpp
-#         src/gbsBindSurfaces.cpp
-#         src/gbsbindrender.cpp 
-#         src/gbsbindmesh.cpp
-#         src/gbsbindinterp.cpp
-#         src/gbsbindapprox.cpp
-#         src/gbsbindbuildcurve.cpp
-#         src/gbsBindBuildSurfaces.cpp
-#         src/gbsBindCurveTools.cpp
-#         src/gbsBindSurfaceTools.cpp
-#         src/gbsBindShaping.cpp
-#         src/gbsBindDiscretize.cpp
-#         # src/gbsbind.cpp 
-#         # ${SRC_LIST}
-# )
-
+include_directories(
+        ${GBS_INCLUDE_DIR}
+        ${EIGEN3_INCLUDE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/inc
+)
 
 pybind11_add_module(
         core
@@ -78,44 +60,6 @@ pybind11_add_module(
 #         NLopt::nlopt 
 # )
 
-
-target_include_directories(
-        core PRIVATE 
-        "${GBS_INCLUDE_DIR}"
-        "${EIGEN3_INCLUDE_DIR}"
-)
-
-target_include_directories(
-        interpolate PRIVATE 
-        "${GBS_INCLUDE_DIR}"
-        "${EIGEN3_INCLUDE_DIR}"
-)
-
-target_include_directories(
-        tools PRIVATE 
-        "${GBS_INCLUDE_DIR}"
-        "${EIGEN3_INCLUDE_DIR}"
-)
-
-target_include_directories(
-        analysis PRIVATE 
-        "${GBS_INCLUDE_DIR}"
-        "${EIGEN3_INCLUDE_DIR}"
-)
-
-target_include_directories(
-        build PRIVATE 
-        "${GBS_INCLUDE_DIR}"
-        "${EIGEN3_INCLUDE_DIR}"
-)
-
-target_include_directories(
-        transform PRIVATE 
-        "${GBS_INCLUDE_DIR}"
-        "${EIGEN3_INCLUDE_DIR}"
-)
-# Si vous avez besoin de définir le standard C++ :
-# target_compile_features(pygbs PRIVATE cxx_std_20)
 
 # Installer le module Python compilé
 # scikit-build détectera cette instruction pour l'inclure dans la wheel
