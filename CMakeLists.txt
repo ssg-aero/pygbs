@@ -4,13 +4,17 @@ set(CMAKE_CXX_STANDARD 20)
 
 # Trouver pybind11 (scikit-build va injecter les chemins si pybind11 est installé via pip/conda).
 find_package(pybind11 REQUIRED)
-find_package(Eigen3)
+find_package(Eigen3 REQUIRED)
 # find_package(gbs REQUIRED)
 set(GBS_INCLUDE_DIR "/home/sebastien/micromamba/envs/dev/include/gbs")
 include_directories(
         ${GBS_INCLUDE_DIR}
         ${EIGEN3_INCLUDE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/inc
+)
+
+add_compile_options(
+        -Wdeprecated-declarations
 )
 
 pybind11_add_module(
@@ -69,5 +73,16 @@ install(TARGETS
                 tools
                 analysis
                 transform
-        LIBRARY DESTINATION .  # Sur certaines plateformes, on peut utiliser 'install' différemment
+        # LIBRARY DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/pygbs  # Sur certaines plateformes, on peut utiliser 'install' différemment
+        LIBRARY DESTINATION ./pygbs  # Sur certaines plateformes, on peut utiliser 'install' différemment
+)
+
+file(GLOB_RECURSE PY_SRC_LIST "./pygbs/*.py")
+
+message(STATUS "Python files" ${PY_SRC_LIST})
+
+install(FILES 
+        ${PY_SRC_LIST}
+        DESTINATION 
+        ./pygbs
 )
