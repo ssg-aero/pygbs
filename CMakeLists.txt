@@ -2,21 +2,35 @@ cmake_minimum_required(VERSION 3.18)
 project(pygbs LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 
+add_subdirectory(nlopt)
+
 # Trouver pybind11 (scikit-build va injecter les chemins si pybind11 est installé via pip/conda).
 find_package(pybind11 REQUIRED)
 find_package(Eigen3 REQUIRED)
-# find_package(gbs REQUIRED)
-set(GBS_INCLUDE_DIR "/home/sebastien/micromamba/envs/dev/include/gbs")
+find_package(Boost REQUIRED)
+message(STATUS "Boost_INCLUDE_DIR: " ${Boost_INCLUDE_DIR})
+# find_package(NLopt REQUIRED)
+# TODO add Confiure to gbs install
+find_package(Gbs REQUIRED)
+message(STATUS "GBS_INCLUDE_DIR: " ${GBS_INCLUDE_DIR})
+message(STATUS "nlopt_lib" ${CMAKE_})
+# message(STATUS "NLOPT_INCLUDE_DIR: " ${NLOPT_INCLUDE_DIR})
+
+# set(NLOPT_INCLUDE_DIR "C:\\Users\\sebas\\workspace\\3rdParty\\nlopt\\build\\install\\include")
+set(NLOPT_STATIC_LIB ${CMAKE_CURRENT_SOURCE_DIR}/build/nlopt/nlopt.lib)
+
 include_directories(
         ${GBS_INCLUDE_DIR}
         ${EIGEN3_INCLUDE_DIR}
+        ${Boost_INCLUDE_DIR}
+        ${NLOPT_INCLUDE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/inc
 )
-
+if(NOT MSVC)
 add_compile_options(
         -Wdeprecated-declarations
 )
-
+endif()
 pybind11_add_module(
         core
         src/gbsBindBaseGeom.cpp
@@ -59,11 +73,19 @@ pybind11_add_module(
         src/gbsBindBuildSurfaces.cpp
 )
 
-# target_link_libraries(
-#         build PRIVATE 
-#         NLopt::nlopt 
-# )
+target_link_libraries(
+        build PRIVATE 
+        # NLopt::nlopt 
+        ${NLOPT_STATIC_LIB}
+        # ${nlopt_lib}
+)
 
+target_link_libraries(
+        analysis PRIVATE 
+        # NLopt::nlopt 
+        ${NLOPT_STATIC_LIB}
+        # ${nlopt_lib}
+)
 
 # Installer le module Python compilé
 # scikit-build détectera cette instruction pour l'inclure dans la wheel
