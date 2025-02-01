@@ -31,8 +31,11 @@ add_compile_options(
         -Wdeprecated-declarations
 )
 endif()
+
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+
 pybind11_add_module(
-        core
+        core MODULE  
         src/gbsBindBaseGeom.cpp
         src/gbsBindBasisFunctions.cpp
         src/gbsBindCurves.cpp
@@ -41,14 +44,14 @@ pybind11_add_module(
 )
 
 pybind11_add_module(
-        interpolate
+        interpolate MODULE  
         src/gbsbindinterp.cpp
         src/gbsbindapprox.cpp
         src/gbsInterpolateBind.cpp
 )
 
 pybind11_add_module(
-        tools
+        tools MODULE  
         src/gbsBindCurveTools.cpp
         src/gbsBindSurfaceTools.cpp
         src/gbsBindDiscretize.cpp
@@ -56,35 +59,37 @@ pybind11_add_module(
 )
 
 pybind11_add_module(
-        analysis
+        analysis MODULE  
         src/gbsBindAnalysis.cpp
         src/gbsAnalysisBind.cpp
 )
 
 pybind11_add_module(
-        transform
+        transform MODULE  
         src/gbsBindTransform.cpp
         src/gbsTransformBind.cpp
 )
 
 pybind11_add_module(
-        build
+        build MODULE  
         src/gbsbindbuildcurve.cpp
         src/gbsBindBuildSurfaces.cpp
+        src/gbsBuildBind.cpp
 )
+
+# target_link_libraries(
+#         interpolate PRIVATE 
+#         core
+# )
 
 target_link_libraries(
         build PRIVATE 
-        # NLopt::nlopt 
         ${NLOPT_STATIC_LIB}
-        # ${nlopt_lib}
 )
 
 target_link_libraries(
         analysis PRIVATE 
-        # NLopt::nlopt 
         ${NLOPT_STATIC_LIB}
-        # ${nlopt_lib}
 )
 
 # Installer le module Python compilé
@@ -95,6 +100,7 @@ install(TARGETS
                 tools
                 analysis
                 transform
+                build
         # LIBRARY DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/pygbs  # Sur certaines plateformes, on peut utiliser 'install' différemment
         LIBRARY DESTINATION ./pygbs  # Sur certaines plateformes, on peut utiliser 'install' différemment
 )

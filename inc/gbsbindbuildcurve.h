@@ -14,7 +14,7 @@ inline auto add_ext(const char *func_name)
 }
 
 template <typename T, size_t dim>
-inline void gbs_bind_build_curve(py::module &m)
+inline void gbs_bind_build_curve(py::module_ &m)
 {
     m.def( add_ext<dim>("build_segment").c_str(),
         py::overload_cast<

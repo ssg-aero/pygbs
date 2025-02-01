@@ -1,4 +1,4 @@
-#pragma
+#pragma once
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <gbs/bssbuild.h>
@@ -6,7 +6,7 @@
 namespace py = pybind11;
 
 template <typename T, size_t dim>
-inline void gbs_bind_build_surface(py::module &m)
+inline void gbs_bind_build_surface(py::module_ &m)
 {
 
     using namespace gbs;
