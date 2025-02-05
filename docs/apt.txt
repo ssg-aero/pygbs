@@ -1,0 +1,3 @@
+cmake
+g++
+pybind11-dev
