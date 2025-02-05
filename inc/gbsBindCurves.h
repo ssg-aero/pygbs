@@ -133,15 +133,15 @@ inline void gbs_bind_curves(py::module &m)
             "Curve evaluation at given parameter at derivative order d",
             py::arg("u"),
             py::arg("d") = 0)
-            .def(
-                "__call__",
-                [](const Curve<T, dim>& self, const std::vector<T>& u_lst, size_t d) {
-                        py::array points = py::cast(self.values(u_lst, d));
-                        return  points;
-                },
-                py::arg("u_lst"),
-                py::arg("d") = 0
-            )
+        .def(
+            "__call__",
+            [](const Curve<T, dim>& self, const std::vector<T>& u_lst, size_t d) {
+                    py::array points = py::cast(self.values(u_lst, d));
+                    return  points;
+            },
+            py::arg("u_lst"),
+            py::arg("d") = 0
+        )
         ;
 
     /////////////////
@@ -154,18 +154,15 @@ inline void gbs_bind_curves(py::module &m)
     .def("__copy__", [](const Line<T, dim> &self) { return Line<T, dim>(self); })
     .def(py::pickle(
             [](const Line<T, dim> &crv) {
-                    auto [p1, p2] = crv.getAx();
                     return py::make_tuple(// __getstate__
-                            p1,
-                            p2
+                            crv.getAx()
                     );
             },
             [](py::tuple t) { // __setstate__
-                    if (t.size() != 2)
+                    if (t.size() != 1)
                             throw std::runtime_error("Invalid state!");
                     return Line<T, dim>{
-                            t[0].cast<gbs::point<T,dim>>(),
-                            t[0].cast<gbs::point<T,dim>>()
+                            t[0].cast<gbs::ax1<T,dim>>()
                     };
             }
     )
@@ -181,6 +178,28 @@ inline void gbs_bind_curves(py::module &m)
     .def("__repr__", [](const gbs::CurveOnSurface<T, dim> &self) { return build_rep( self ); } )
     .def("basisCurve",&gbs::CurveOnSurface<T, dim>::basisCurve)
     .def("basisSurface",&gbs::CurveOnSurface<T, dim>::basisSurface)
+    .def(py::pickle(
+            [](CurveOnSurface<T, dim> &crv) {
+                    // auto crv_ = crv.p_basisCurve();
+                    // auto srf_ = crv.p_basisSurface();
+                    // return py::make_tuple(// __getstate__
+                    //         crv_,
+                    //         srf_
+                    // );
+                    return py::make_tuple(// __getstate__
+                            crv.basisCurve(),
+                            crv.basisSurface()
+                    );
+            },
+            [](py::tuple t) { // __setstate__
+                    if (t.size() != 2)
+                            throw std::runtime_error("Invalid state!");
+                    return CurveOnSurface<T, dim>{
+                            t[0].cast<std::shared_ptr<gbs::Curve<T, 2>>>(),
+                            t[1].cast<std::shared_ptr<gbs::Surface<T, dim>>>()
+                    };
+            }
+    ))
     ;
 
 
