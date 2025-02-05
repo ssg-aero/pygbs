@@ -18,8 +18,8 @@ sphinx:
 # declare the Python requirements required to build your documentation
 # See https://docs.readthedocs.io/en/stable/guides/reproducible-builds.html
 python:
-   install:
-   - requirements: docs/requirements.txt
+  install:
+    - requirements: docs/requirements.txt
   # Allow system dependencies (needed for pybind11 sometimes)
   system_packages: true
 # Ensure it doesn't install your package automatically
