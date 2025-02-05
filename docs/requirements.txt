@@ -1,6 +1,6 @@
 sphinx
 piccolo-theme
 nbsphinx
+pybind11
 pygbs
 scipy
-pybind11
