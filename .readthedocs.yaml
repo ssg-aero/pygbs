@@ -20,6 +20,5 @@ sphinx:
 python:
    install:
    - requirements: docs/requirements.txt
-
   system_packages: true  # Allow system dependencies (needed for pybind11 sometimes)
   extra_requirements: []  # Ensure it doesn't install your package automatically
