@@ -1,1 +1,5 @@
 sphinx
+piccolo-theme
+nbsphinx
+pygbs
+scipy
