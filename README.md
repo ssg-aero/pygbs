@@ -1,18 +1,45 @@
-# PyGbs is the new binding of GBS
-The original c++ project can be found at:
-https://github.com/ssg-aero/gbs
+# PyGbs: Python Binding for GBS
+<!-- 
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/ssg-aero/pygbs)  
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) -->
 
-## Introduction
+PyGbs is a modern Python binding for the [GBS C++ library](https://github.com/ssg-aero/gbs). It offers fast, object-oriented, and dimension-templated geometry tools—including NURBS curves and surfaces—with implementations of many algorithms from *The NURBS Book*.
 
-### PyGbs is fast.
+---
 
-Compared to scipy interpolation PyGbs runs roughly 10x faster.
+## Features
+
+- **High Performance:**  
+  PyGbs runs roughly 10× faster than SciPy’s interpolation routines.
+
+- **Object-Oriented and Dimension-Templated:**  
+  Support for 1D, 2D, 3D, and higher-dimensional geometrical objects.  
+  - **Curves:** Line, Circle, BSPline Curve, NURBS Curve, etc.
+  - **Surfaces:** BSPline Surface, NURBS Surface, etc.
+
+- **Rich NURBS Functionality:**  
+  Implements key algorithms including interpolation, approximation, knot insertion, extrema, extension, revolution, loft, and more.
+
+---
+
+## Installation
+
+Install PyGbs via pip:
+
+```bash
+pip install pygbs
+```
+### Quick Performance Comparison
+PyGbs outperforms SciPy’s interpolation in speed. For example:
+
+#### SciPy CubicSpline
 ``` python
 import numpy as np
 from scipy.interpolate import CubicSpline
 x = np.arange(10)
 y = np.sin(x)
 ```
+#### PyGbs Interpolation
 ``` python
 from pygbs import core
 from pygbs import interpolate
@@ -23,35 +50,46 @@ points = [[x_, y_] for x_, y_ in zip(x, y)]
 %%timeit
 cs = CubicSpline(x, y)
 ```
+``` sql
 86.8 μs ± 3.41 μs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+```
 ``` python
 %%timeit
 crv = interpolate.interpolate_cn(points, 3)
 ```
+``` sql
 14.8 μs ± 406 ns per loop (mean ± std. dev. of 7 runs, 100,000 loops each)
-### Object oriented and dimension templated
-- 1D, 2D, 3D, ...
-- Base Geom objects
-    - Curve
-        - Line
-        - Circle
-        - BSPline Curve
-        - NURBS Curve
-        - ...
-    - Surface
-        - BSPline Curve
-        - NURBS Surface
-        - ...
-### Implements most of the NURBS's Book algorythm
+```
+### Object-Oriented and Dimension-Templated Design
+
+- **Multi-Dimensional Support:**  
+  Works seamlessly with 1D, 2D, 3D, and higher-dimensional geometries.
+
+- **Core Geometric Objects:**
+  - **Curves:**
+    - Line
+    - Circle
+    - B-Spline Curve
+    - NURBS Curve
+    - *and more...*
+  - **Surfaces:**
+    - B-Spline Surface
+    - NURBS Surface
+    - *and more...*
+
+### Comprehensive Implementation of *The NURBS Book* Algorithms
+
+PyGbs implements a broad range of algorithms inspired by *The NURBS Book*, including:
+
 - Interpolation
 - Approximation
-- Knots insertion
-- Extrema
-- Extention
-- Revolution
-- Loft
-- Extension
-- ...
+- Knot Insertion
+- Extrema Calculation
+- Extension Techniques
+- Surface Revolution
+- Lofting
+- *and many others...*
+
 ## Examples
 
 ### Direct curves creation
@@ -75,7 +113,7 @@ from pygbs import core
     point = crv(0.5)
 
 ```
-### Direc surface creeation
+### Direct surface creeation
 ``` python
 from pygbs import core
 
