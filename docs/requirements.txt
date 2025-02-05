@@ -3,3 +3,4 @@ piccolo-theme
 nbsphinx
 pygbs
 scipy
+pybind11
