@@ -22,5 +22,3 @@ python:
     - requirements: docs/requirements.txt
   # Allow system dependencies (needed for pybind11 sometimes)
   system_packages: true
-# Ensure it doesn't install your package automatically
-  extra_requirements: []
