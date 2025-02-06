@@ -10,7 +10,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "pygbs"
-version = "0.4.1"
+version = "0.4.2"
 description = "Python bindings for the GBS library"
 readme = "README.md"
 license = { text = "GNU GPL3.0" }
